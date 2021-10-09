@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+const props = defineProps<{
+  src: string;
+}>();
+
 const emit = defineEmits<{
   (e: "change", value: string): void;
 }>();
 
-const src = ref("");
-
 function handleChangeSrc(event: Event) {
-  src.value = (event.target as HTMLTextAreaElement).value;
-  emit("change", src.value);
+  emit("change", (event.target as HTMLTextAreaElement).value);
 }
 </script>
 

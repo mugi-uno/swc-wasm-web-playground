@@ -13,10 +13,10 @@ export const useSWCTransform = () => {
     wasmReady.value = true;
   });
 
-  const transform = (src: string) => {
+  const transform = (src: string, opts: any) => {
     if (!wasmReady.value) return "";
 
-    const result = transformSync(src, {});
+    const result = transformSync(src, opts);
 
     return result;
   };

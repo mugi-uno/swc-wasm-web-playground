@@ -8,9 +8,13 @@
   },
   "dependencies": {
     "@swc/wasm-web": "^1.2.95",
+    "lodash.debounce": "^4.0.8",
+    "splitpanes": "^3.0.6",
     "vue": "^3.2.16"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/splitpanes": "^2.2.1",
     "@vitejs/plugin-vue": "^1.9.3",
     "autoprefixer": "^10.3.7",
     "postcss": "^8.3.9",

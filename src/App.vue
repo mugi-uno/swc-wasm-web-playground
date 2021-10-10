@@ -6,10 +6,11 @@ import PlaygroundArea from "./components/PlaygroundArea.vue";
   <div class="flex flex-col h-[100vh] font-mono">
     <h1
       class="
-        text-2xl
+        text-xl
         p-2
-        text-gray-800
+        text-white
         border-b-[4px] border-gray-100 border-solid
+        bg-gray-500
       "
     >
       🔨 @swc/wasm-web Playground

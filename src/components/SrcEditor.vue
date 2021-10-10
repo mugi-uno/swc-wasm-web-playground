@@ -16,6 +16,7 @@ function handleChangeSrc(event: Event) {
 
 <template>
   <div class="p-2">
+    <h2 class="text-sm border-b-[1px] pb-1 mb-2 font-bold">src</h2>
     <textarea
       :value="src"
       @input="handleChangeSrc"

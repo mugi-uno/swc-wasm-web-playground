@@ -8,9 +8,11 @@ import { reactive, ref } from "@vue/reactivity";
 import { SWCOptions } from "./types";
 import SWCOptionsEditor from "./SWCOptionsEditor.vue";
 import TransformLoader from "./TransformLoader.vue";
+import { defineComponent } from "@vue/runtime-core";
 
 const src = ref("");
 const result = ref("");
+const transformError = ref("");
 const transforming = ref(false);
 
 const swcOptions = reactive<SWCOptions>({
@@ -24,16 +26,24 @@ const swcOptions = reactive<SWCOptions>({
 const { transform } = useSWCTransform();
 
 const handleChangeSrc = debounce((newSrc: string) => {
+  transformError.value = "";
   transforming.value = true;
   src.value = newSrc;
   try {
     const transformResponse = transform(newSrc, swcOptions);
     console.log(transformResponse);
     result.value = transformResponse?.code || "";
+  } catch (e) {
+    if (typeof e === "string") {
+      transformError.value = e;
+    }
+    if (e instanceof Error) {
+      transformError.value = e.toString();
+    }
   } finally {
     transforming.value = false;
   }
-}, 1000);
+}, 500);
 
 const handleUpdateOptions = (options: SWCOptions) => {
   swcOptions.jsc = options.jsc;
@@ -63,7 +73,10 @@ const handleUpdateOptions = (options: SWCOptions) => {
         >
           <TransformLoader />
         </div>
-        <ResultViewer :result="result" class="w-full h-full"
+        <ResultViewer
+          :result="result"
+          :transformError="transformError"
+          class="w-full h-full"
       /></Pane>
     </Splitpanes>
   </div>

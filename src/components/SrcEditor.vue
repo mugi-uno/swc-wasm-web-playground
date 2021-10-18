@@ -14,7 +14,7 @@ function handleChangeSrc(event: Event) {
     <textarea
       :value="src"
       @input="handleChangeSrc"
-      class="w-full h-full focus:outline-none font-mono text-[14px]"
+      class="w-full h-full focus:outline-none font-mono text-[11px]"
     />
   </div>
 </template>

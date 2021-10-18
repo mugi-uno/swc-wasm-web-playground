@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@swc/core": "^1.2.99",
     "@swc/wasm-web": "^1.2.95",
     "lodash.debounce": "^4.0.8",
     "splitpanes": "^3.0.6",

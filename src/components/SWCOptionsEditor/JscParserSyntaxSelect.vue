@@ -29,8 +29,8 @@ function handleChangeJscParserSyntax(event: Event) {
 </script>
 
 <template>
-  <div>
-    <div>jsc.parser.syntax</div>
+  <div class="optionSelect">
+    <div class="optionName">jsc.parser.syntax</div>
     <select
       :value="options.jsc.parser.syntax"
       @change="handleChangeJscParserSyntax"

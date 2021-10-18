@@ -29,13 +29,15 @@ export const DEFAULT_TYPESCRIPT_PARSER_OPTIONS: SWCOptions["jsc"]["parser"] = {
   dynamicImport: false,
 } as const;
 
-export const DEFAULT_STATE = {
+export const DEFAULT_STATE: State = {
   src: "",
   result: "",
   transformError: "",
   options: {
     jsc: {
       parser: DEFAULT_TYPESCRIPT_PARSER_OPTIONS,
+      externalHelpers: false,
+      target: "es5",
     },
   },
 } as const;

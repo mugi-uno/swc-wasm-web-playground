@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { provideState } from "./components/composables/useState";
 import PlaygroundArea from "./components/PlaygroundArea.vue";
+
+provideState();
 </script>
 
 <template>

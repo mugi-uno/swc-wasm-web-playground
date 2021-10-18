@@ -4,34 +4,25 @@ import ResultViewer from "./ResultViewer.vue";
 import SrcEditor from "./SrcEditor.vue";
 import debounce from "lodash.debounce";
 import { useSWCTransform } from "./composables/useSWCTransform";
-import { reactive, ref } from "@vue/reactivity";
+import { ref } from "@vue/reactivity";
 import { SWCOptions } from "./types";
-import SWCOptionsEditor from "./SWCOptionsEditor.vue";
+import SWCOptionsEditor from "./SWCOptionsEditor/SWCOptionsEditor.vue";
 import TransformLoader from "./TransformLoader.vue";
-import { defineComponent } from "@vue/runtime-core";
+import { watch, watchEffect } from "@vue/runtime-core";
+import { injectState } from "./composables/useState";
 
-const src = ref("");
-const result = ref("");
-const transformError = ref("");
+const { src, options, result, transformError } = injectState();
+
 const transforming = ref(false);
-
-const swcOptions = reactive<SWCOptions>({
-  jsc: {
-    parser: {
-      syntax: "typescript",
-    },
-  },
-});
 
 const { transform } = useSWCTransform();
 
-const handleChangeSrc = debounce((newSrc: string) => {
+const callTransform = debounce((newSrc: string, newOptions: SWCOptions) => {
   transformError.value = "";
   transforming.value = true;
-  src.value = newSrc;
   try {
-    const transformResponse = transform(newSrc, swcOptions);
-    console.log(transformResponse);
+    console.log("options", JSON.stringify(newOptions));
+    const transformResponse = transform(newSrc, newOptions);
     result.value = transformResponse?.code || "";
   } catch (e) {
     if (typeof e === "string") {
@@ -45,27 +36,27 @@ const handleChangeSrc = debounce((newSrc: string) => {
   }
 }, 500);
 
-const handleUpdateOptions = (options: SWCOptions) => {
-  swcOptions.jsc = options.jsc;
-
-  handleChangeSrc(src.value);
-};
+watch(
+  [src, options],
+  () => {
+    console.log(src.value, options.value);
+    callTransform(src.value, options.value);
+  },
+  {
+    deep: true,
+  }
+);
 </script>
 
 <template>
   <div class="flex">
     <div
-      class="w-[120px] h-full p-2 border-r-[1px] border-solid border-gray-200"
+      class="h-full p-2 border-r-[1px] border-solid border-gray-200 flex-grow"
     >
-      <SWCOptionsEditor
-        :initial-options="swcOptions"
-        @update="handleUpdateOptions"
-      />
+      <SWCOptionsEditor />
     </div>
     <Splitpanes class="default-theme">
-      <Pane size="50"
-        ><SrcEditor :src="src" class="w-full h-full" @change="handleChangeSrc"
-      /></Pane>
+      <Pane size="50"><SrcEditor :src="src" class="w-full h-full" /></Pane>
       <Pane size="50" class="relative">
         <div
           v-if="transforming"
@@ -73,10 +64,7 @@ const handleUpdateOptions = (options: SWCOptions) => {
         >
           <TransformLoader />
         </div>
-        <ResultViewer
-          :result="result"
-          :transformError="transformError"
-          class="w-full h-full"
+        <ResultViewer class="w-full h-full"
       /></Pane>
     </Splitpanes>
   </div>

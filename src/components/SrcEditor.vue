@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { injectState } from "./composables/useState";
 
-const props = defineProps<{
-  src: string;
-}>();
-
-const emit = defineEmits<{
-  (e: "change", value: string): void;
-}>();
+const { src } = injectState();
 
 function handleChangeSrc(event: Event) {
-  emit("change", (event.target as HTMLTextAreaElement).value);
+  src.value = (event.target as HTMLTextAreaElement).value;
 }
 </script>
 

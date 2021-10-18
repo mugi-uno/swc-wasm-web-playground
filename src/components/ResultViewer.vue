@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { injectState } from "./composables/useState";
 
-defineProps<{ result: string; transformError: string }>();
+const { result, transformError } = injectState();
 </script>
 
 <template>
